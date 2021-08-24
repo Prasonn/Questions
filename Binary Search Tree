@@ -1,0 +1,101 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct Node
+{
+    int data;
+    Node* left,*right;
+    Node(int val)
+    {
+        data=val;
+        left=right=NULL;
+    }
+};
+
+Node* level(Node* root,int val)
+{
+
+    if(root==NULL)
+    {
+        return new Node(val);
+    }
+    if(val>root->data)
+        root->right=level(root->right,val);
+    else {
+        root->left=level(root->left,val);
+    }
+    return root;
+}
+
+void levelorder(Node*root)
+{
+    if(root==NULL)
+        return;
+    cout<<root->data<<endl;
+    levelorder(root->left);
+    levelorder(root->right);
+}
+
+void height(Node* root)
+{
+    int lheight=0;
+    int rheight=0;
+    Node* temp=root;
+    if(root==NULL)
+        return;
+    while(temp->left!=NULL)
+    {
+        lheight++;
+        temp=temp->left;
+    }
+    temp=root;
+    while(temp->right!=NULL)
+    {
+        rheight++;
+        temp=temp->right;
+    }
+    int ans=max(lheight,rheight);
+    cout<<ans;
+}
+
+void reverselevelorder(Node* root)
+{
+    if(root==NULL)
+        return;
+    reverselevelorder(root->right);
+    reverselevelorder(root->left);
+    cout<<root->data<<endl;
+}
+
+bool findit(Node* root,int x)
+{
+    if(root==NULL)
+    {
+        return false;
+    }
+
+    if(x==root->data)
+        return true;
+    if(x>root->data)
+        findit(root->right,x);
+    else
+        findit(root->left,x);
+}
+
+int main()
+{
+    Node *root=NULL;
+    root=level(root,1);
+    level(root,2);
+    level(root,3);
+    level(root,4);
+    level(root,5);
+    //printit(root);
+    //height(root);
+    //levelorder(root);
+    reverselevelorder(root);
+    if(findit(root,6))
+        cout<<"found";
+    else
+        cout<<"NotFound";
+
+}
