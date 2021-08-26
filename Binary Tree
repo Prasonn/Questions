@@ -1,0 +1,165 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct Node
+{
+    int data;
+    Node* left,*right;
+    Node(int val)
+    {
+        data=val;
+        left=right=NULL;
+    }
+};
+
+
+void inorder(Node* root)
+{
+    if(root==NULL)
+        return;
+    inorder(root->left);
+    cout<<root->data<<" ";
+    inorder(root->right);
+}
+
+
+
+void Mirror(Node* root)
+{
+    if(root==NULL)
+        return;
+    Node* temp;
+    Mirror(root->left);
+    Mirror(root->right);
+
+    temp=root->left;
+    root->left=root->right;
+    root->right=temp;
+}
+
+void leftView(Node* root)
+{
+    if(root==NULL)
+        return;
+    queue<Node*> q;
+    q.push(root);
+
+    while(!q.empty())
+    {
+        int n=q.size();
+        for(int i=1;i<=n;i++)
+        {
+            Node* temp=q.front();
+            q.pop();
+
+            if(i==1)
+            {
+                cout<<temp->data<<endl;
+            }
+            if(temp->left!=NULL)
+                q.push(temp->left);
+            if(temp->right!=NULL)
+                q.push(temp->right);
+
+        }
+    }
+
+}
+
+void RightView(Node* root)
+{
+    if(root==NULL)
+        return;
+    queue<Node*> q;
+    q.push(root);
+    while(!q.empty())
+    {
+        int n=q.size();
+        for(int i=1;i<=n;i++)
+        {
+            Node* temp=q.front();
+            q.pop();
+            if(i==n)
+                cout<<temp->data<<endl;
+            if(temp->left!=NULL)
+                q.push(temp->left);
+            if(temp->right!=NULL)
+                q.push(temp->right);
+        }
+    }
+}
+
+void topview(Node* root)
+{
+    map<int,int>m;
+    queue<pair<Node*,int>> q;
+    if(!root)
+        return;
+    q.push({root,0});
+    while(!q.empty())
+    {
+        Node* temp=q.front().first;
+        int h=q.front().second;
+        q.pop();
+        if(!m[h])
+        {
+            m[h]=temp->data;
+        }
+        if(temp->left)
+            q.push({temp->left,h-1});
+        if(temp->right) {
+            q.push({temp->right,h+1});
+        }
+        for(auto x:m)
+            cout<<x.second<<endl;
+
+
+    }
+}
+
+int height(Node* root)
+{
+    if(root==NULL)
+        return 0;
+    int lh=height(root->left);
+    int rh=height(root->right);
+    return max(lh,rh)+1;
+
+}
+
+bool balanced(Node* root)
+{
+    if(root==NULL)
+        return true;
+    if(balanced(root->left)==false)
+        return false;
+    if(balanced(root->right)==false)
+        return true;
+    int lh=height(root->left);
+    int rh=height(root->right);
+    if(abs(lh-rh)<=1)
+        return true;
+    else
+        return false;
+
+}
+
+int main()
+{
+    Node* root = new Node(1);
+    root->left = new Node(2);
+    root->right = new Node(3);
+    root->left->right = new Node(4);
+    root->left->right->right = new Node(5);
+    root->left->right->right->right = new Node(6);
+    //TopView(root);
+    //RightView(root);
+    cout<<endl;
+//    leftiew(root);
+    //balanced(root);
+    cout<<endl;
+    topview(root);
+
+
+}
+
